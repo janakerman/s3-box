@@ -26,13 +26,23 @@ class Index extends Component {
 
         fetch('http://localhost:3000/api/buckets', {
             body: JSON.stringify(data),
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json' },
             method: 'POST'
         })
         .then(response => {
             console.log('Bucket created')
+            location.reload()
+        })
+    }
+
+    deleteBucket(bucketName) {
+        console.info(`Deleting bucket named '${bucketName}'`)
+
+        fetch(`http://localhost:3000/api/buckets/${bucketName}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            console.log('Bucket deleted')
             location.reload()
         })
     }
@@ -49,6 +59,7 @@ class Index extends Component {
             <li key={bucket.Name}>
                 <span>{bucket.Name}</span>
                 <span>Created: {bucket.CreationDate}</span>
+                <button type="button" onClick={this.deleteBucket.bind(this, bucket.Name)}>Delete</button>
             </li>
         )
 

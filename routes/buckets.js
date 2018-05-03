@@ -24,7 +24,6 @@ const list = (req, res) => {
     });
 }
 
-const bucketName = 'testtestbucketjanakerman';
 const create = (req, res) => {
     const bucketName = req.body.name
 
@@ -39,7 +38,22 @@ const create = (req, res) => {
     });
 }
 
+const deleteBucket = (req, res) => {
+    const bucketName = req.params.name
+
+    s3.deleteBucket({Bucket: bucketName}, (err, data) => {
+        if (err) {
+            console.error(`Unable to delete bucket '${bucketName}': ${err}`);
+            throw new Exception(err)
+        }
+        
+        console.log(`Bucket deleted: '${bucketName}'`)
+        return res.send({status: 'success'})
+    });
+}
+
 module.exports = {
     list,
-    create
+    create,
+    deleteBucket
 }
